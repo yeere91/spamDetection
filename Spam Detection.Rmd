@@ -1,0 +1,69 @@
+---
+title: "Spam Emails"
+author: "Regan Yee"
+date: "November 21, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('kernlab')
+library(ggplot2)
+library(dplyr)
+library(tree)
+data(spam)
+```
+
+## R Markdown
+
+```{r}
+## Summary functions of Spam Emails:
+colnames(spam)
+summary(spam)
+head(spam)
+
+## Box Plots
+for(i in 1:57){
+  g2 = ggplot(spam, mapping = aes(x=type, y=spam[,i], fill=type))
+  g2_plot = g2 + geom_boxplot() + 
+    xlab(names(spam)[i]) + ggtitle(paste0("Boxplot of ", names(spam)[i]))
+  print(g2_plot)
+}
+```
+
+## Bar Plot of Type
+```{r}
+g = ggplot(spam, mapping = aes(x=type, fill=type))
+g + geom_bar()
+```
+
+colnames(spam)
+spam$capitalLong
+spam$capitalTotal
+## Bar Plot of Type
+```{r}
+g = ggplot(spam, mapping = aes(x=capitalTotal, fill=type))
+g + geom_bar()
+```
+
+## Analysis of Box Plots
+your
+you
+all
+our
+will
+
+## Trees
+```{r}
+set.seed(0)
+train = sample(1:nrow(spam), 8*nrow(spam)/10)
+spam.train = spam[train, ]
+spam.test = spam[-train, ]
+initial.tree = tree(type ~ ., split = "gini", data = spam.train)
+plot(initial.tree)
+
+## Doing a normal tree doesn't make sense -- there are too many terminal nodes...
+## R won't let you proceed as the maximum depth is reached.
+```
+
+
